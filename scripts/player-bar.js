@@ -15,7 +15,7 @@
     player.playPause(nextSong);
   });
 
-  // Previous button 
+  // Previous button
   $('button#previous').on('click', function() {
     if (player.playState !== 'playing') { return; }
 
@@ -26,4 +26,16 @@
     const previousSong = album.songs[previousSongIndex];
     player.playPause(previousSong);
   });
+  $('#time-control .current-time').text( currentTime ); // NOT WORKING
+  $('#time-control input').on('input', function (event) {
+    player.skipTo(event.target.value);
+  });
+
+  setInterval( () => {
+    if (player.playState !== 'playing') { return; }
+    const currentTime = player.getTime();
+    const duration = player.getDuration();
+    const percent = (currentTime / duration) * 100;
+    $('#time-control input').val(percent);
+   }, 1000);
 }
